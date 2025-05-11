@@ -5,21 +5,21 @@
 
 typedef struct ErrorInfo
 {
-    const char *Message;
+    char Message[256];
     const char *File;
     const char *Function;
     size_t Line;
 } ErrorInfo;
 
-extern ErrorInfo ErrorCurrent;
+extern __thread ErrorInfo ErrorCurrent;
 
+ErrorInfo ErrorInfoInit(int error, const char *file, const char *function, size_t line, char *message, ...);
 void ErrorInfoPrint(const ErrorInfo *errorInfo);
 
-#define Throw(error, message, returnValue) \
+#define Throw(error, returnValue, message, ...) \
     do \
     {\
-        errno = error;\
-        ErrorCurrent = (ErrorInfo){message, __FILE__, __func__, __LINE__};\
+        ErrorCurrent = ErrorInfoInit(error, __FILE__, __func__, __LINE__, message, ## __VA_ARGS__);\
         return returnValue;\
     } while (0)
 
