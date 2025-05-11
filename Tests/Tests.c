@@ -4,8 +4,7 @@
 
 int TestFunc1()
 {
-    errno = ENOMEM;
-    return -1;
+    Throw(ENOMEM, "This is a test", -1);
 }
 
 int TestFunc()
@@ -18,8 +17,7 @@ int main(int argc, char **argv)
     Try(TestFunc(), 0, 
         Catch(ENOMEM)
         printf("Caught\n");
-        PrintStackTrace();
-        ClearStackTrace();
+        ErrorInfoPrint(&ErrorCurrent);
         return 0;
     );
 }

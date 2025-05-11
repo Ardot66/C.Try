@@ -3,30 +3,31 @@
 
 #include <stdint.h>
 
-typedef struct StackLocation
+typedef struct ErrorInfo
 {
+    const char *Message;
     const char *File;
     const char *Function;
     size_t Line;
-} StackLocation;
+} ErrorInfo;
 
-extern void (*OnException)();
+extern ErrorInfo ErrorCurrent;
 
-extern const size_t StackTraceMax;
-extern StackLocation StackTrace[20];
-extern size_t StackTraceCount;
+void ErrorInfoPrint(const ErrorInfo *errorInfo);
 
-void ExceptionOccurred(const char *file, const char *functionName, size_t line);
-void ClearStackTrace();
-void PrintStackTrace();
-void PrintStackLocation(const StackLocation *stackLocation);
+#define Throw(error, message, returnValue) \
+    do \
+    {\
+        errno = error;\
+        ErrorCurrent = (ErrorInfo){message, __FILE__, __func__, __LINE__};\
+        return returnValue;\
+    } while (0)
 
 #define Try(statement, returnValue, ...) \
     do \
     {\
         if(statement) \
         {\
-            ExceptionOccurred(__FILE__, __func__, __LINE__);\
             switch(errno) \
             {\
                 default: \
