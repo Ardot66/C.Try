@@ -2,6 +2,7 @@
 #define ___TRY___
 
 #include <stdint.h>
+#include <errno.h>
 
 typedef struct ErrorInfo
 {
