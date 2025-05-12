@@ -6,7 +6,7 @@
 
 typedef struct ErrorInfo
 {
-    char Message[256];
+    char *Message;
     const char *File;
     const char *Function;
     size_t Line;
@@ -16,6 +16,9 @@ extern __thread ErrorInfo ErrorCurrent;
 
 ErrorInfo ErrorInfoInit(int error, const char *file, const char *function, size_t line, char *message, ...);
 void ErrorInfoPrint(const ErrorInfo *errorInfo);
+void ErrorCurrentPrint();
+void ErrorInfoClear(ErrorInfo *errorInfo);
+void ErrorCurrentClear();
 
 #define Throw(error, returnValue, message, ...) \
     do \

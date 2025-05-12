@@ -18,7 +18,8 @@ int main(int argc, char **argv)
     Try(TestFunc(), 0, 
         Catch(ENOMEM)
         printf("Caught\n");
-        ErrorInfoPrint(&ErrorCurrent);
+        ErrorCurrentPrint();
+        ErrorCurrentClear();
         return 0;
     );
 }
