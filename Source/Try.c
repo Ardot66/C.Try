@@ -15,7 +15,7 @@ ErrorInfo ErrorInfoInit(int error, const char *file, const char *function, size_
     va_list args;
     va_start(args, message);
     
-    size_t messageLength = vsnprintf(NULL, 0, message, args);
+    size_t messageLength = vsnprintf(NULL, 0, message, args) + 1;
     ErrorInfo errorInfo = {.File = file, .Function = function, .Line = line};
     errorInfo.Message = malloc(messageLength + 1);
     if(errorInfo.Message != NULL)
