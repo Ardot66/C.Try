@@ -19,7 +19,8 @@ int main(int argc, char **argv)
         if(errno == ENOMEM)
         {
             printf("Caught\n");
-            ErrorInfoPrint(&ErrorCurrent);
+            ErrorCurrentPrint();
+            ErrorCurrentClear();
             return 0;
         }
     );
