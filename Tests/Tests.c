@@ -16,9 +16,11 @@ int TestFunc()
 int main(int argc, char **argv)
 {
     Try(TestFunc(), 0, 
-        Catch(ENOMEM)
-        printf("Caught\n");
-        ErrorInfoPrint(&ErrorCurrent);
-        return 0;
+        if(errno == ENOMEM)
+        {
+            printf("Caught\n");
+            ErrorInfoPrint(&ErrorCurrent);
+            return 0;
+        }
     );
 }

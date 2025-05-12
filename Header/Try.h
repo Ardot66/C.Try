@@ -23,22 +23,16 @@ void ErrorInfoPrint(const ErrorInfo *errorInfo);
         return returnValue;\
     } while (0)
 
+#define TryNotNull(statement, returnValue, ...) Try((statement) == NULL, returnValue, __VA_ARGS__)
+
 #define Try(statement, returnValue, ...) \
     do \
     {\
         if(statement) \
         {\
-            switch(errno) \
-            {\
-                default: \
-                {\
-                    return returnValue;\
-                }\
-                __VA_ARGS__ \
-            }\
+            __VA_ARGS__ \
+            return returnValue;\
         }\
     } while (0)
-
-#define Catch(error) case error:
 
 #endif
