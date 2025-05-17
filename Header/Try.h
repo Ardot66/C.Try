@@ -20,23 +20,26 @@ void ErrorCurrentPrint();
 void ErrorInfoClear(ErrorInfo *errorInfo);
 void ErrorCurrentClear();
 
-#define Throw(error, returnValue, message, ...) \
+#define ThrowDo(error, action, message, ...)\
     do \
     {\
         ErrorCurrent = ErrorInfoInit(error, __FILE__, __func__, __LINE__, message, ## __VA_ARGS__);\
-        return returnValue;\
+        action\
     } while (0)
 
-#define TryNotNull(statement, returnValue, ...) Try((statement) == NULL, returnValue, __VA_ARGS__)
+#define Throw(error, returnValue, message, ...) ThrowDo(error, return returnValue, message, __VA_ARGS__)
 
-#define Try(statement, returnValue, ...) \
+#define TryDo(statement, ...)\
     do \
     {\
         if(statement) \
         {\
             __VA_ARGS__ \
-            return returnValue;\
         }\
     } while (0)
+
+#define Try(statement, returnValue, ...) TryDo(statement, __VA_ARGS__ return returnValue;)
+
+#define TryNotNull(statement, returnValue, ...) Try((statement) == NULL, returnValue, __VA_ARGS__)
 
 #endif
