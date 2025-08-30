@@ -2,7 +2,6 @@
 #define ___TRY___
 
 #include <stdint.h>
-#include <errno.h>
 
 typedef struct ErrorInfo
 {
@@ -23,11 +22,11 @@ void ErrorCurrentClear();
 #define ThrowDo(error, action, message, ...)\
     do \
     {\
-        ErrorCurrent = ErrorInfoInit(error, __FILE__, __func__, __LINE__, message, ## __VA_ARGS__);\
+        ErrorCurrent = ErrorInfoInit(error, __FILE__, __func__, __LINE__, message __VA_OPT__(,) __VA_ARGS__);\
         action\
     } while (0)
 
-#define Throw(error, returnValue, message, ...) ThrowDo(error, return returnValue, message, __VA_ARGS__)
+#define Throw(error, returnValue, message, ...) ThrowDo(error, return returnValue;, message, __VA_ARGS__)
 
 #define TryDo(statement, ...)\
     do \
@@ -38,6 +37,8 @@ void ErrorCurrentClear();
         }\
     } while (0)
 
+#define TryNotNullDo(statement, ...) TryDo((statement) == NULL, __VA_ARGS__)
+    
 #define Try(statement, returnValue, ...) TryDo(statement, __VA_ARGS__ return returnValue;)
 
 #define TryNotNull(statement, returnValue, ...) Try((statement) == NULL, returnValue, __VA_ARGS__)
