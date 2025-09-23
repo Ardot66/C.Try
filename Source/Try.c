@@ -6,7 +6,7 @@
 
 __thread ErrorInfo ErrorCurrent = {.Message = NULL};
 
-ErrorInfo ErrorInfoInit(int error, const char *file, const char *function, size_t line, char *message, ...)
+ErrorInfo ErrorInfoInit(int error, const char *file, const char *function, size_t line, const char *message, ...)
 {
     errno = error;
 
