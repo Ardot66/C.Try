@@ -43,7 +43,7 @@ void ErrorCurrentClear();
 
 #define TryNotNull(statement, returnValue, ...) Try((statement) == NULL, returnValue, __VA_ARGS__)
 
-#define AssertDoMsg(statement, error, action, message, ...) do { if((statement)) {ThrowDo(error, action, message, __VA_ARGS__);} } while(0)
+#define AssertDoMsg(statement, error, action, message, ...) do { if(!(statement)) {ThrowDo(error, action, message, __VA_ARGS__);} } while(0)
 #define AssertMsg(statement, error, returnValue, message, ...) AssertDoMsg(statement, error, return returnValue;, message, __VA_ARGS__)
 #define AssertDo(statement, error, ...) AssertDoMsg(statement, error, __VA_ARGS__, "Assertion failed")
 #define Assert(statement, error, returnValue, ...) AssertDoMsg(statement, error, __VA_ARGS__ return returnValue;, "Assertion failed")
